@@ -1,19 +1,20 @@
 <app-nav></app-nav>
-<button (click)="createUser()">Crear Usuario</button>
-<!-- Descarga de archivos de forma nativa -->
-<p>
-  <a href="./assets/files/texto.txt" download>Descargar</a>
-</p>
-<!-- Descarga de archivos con programacion -->
-<p>
-  <button (click)="downloadPDF()">Descargar PDF</button>
-</p>
-<!-- Para subir archivos -->
-<input type="file" (change)="onUpload($event)">
-<img *ngIf="imgRta" [src]="imgRta" alt="Imagen a Subir" height="200">
+<router-outlet></router-outlet>
+<!--app-products></app-products-->
 <!--button (click)="login()">Login</button>
+<button (click)="createUser()">Crear Usuario</button>
 <button (click)="getProfile()">Profile</button-->
-<app-products></app-products>
+<!-- Descarga de archivos de forma nativa -->
+<!--p>
+  <a href="./assets/files/texto.txt" download>Descargar</a>
+</p-->
+<!-- Descarga de archivos con programacion -->
+<!--p>
+  <button (click)="downloadPDF()">Descargar PDF</button>
+</p-->
+<!-- Para subir archivos -->
+<!--input type="file" (change)="onUpload($event)">
+<img *ngIf="imgRta" [src]="imgRta" alt="Imagen a Subir" height="200"-->
 <!--p><input type="text" [(ngModel)]="imgParent"></p>
 <button (click)="toogleImg()">Toogle Image</button>
 <app-img *ngIf="showImage" [img]="imgParent" (loaded)="onLoaded($event)"></app-img>

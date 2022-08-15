@@ -26,7 +26,7 @@
     (addedProduct)="onAddToShoppingCart($event)"
     (showProduct)="onShowDetail($event)"
   ></app-product>
-  <button (click)="loadMore()">Load More</button>
+  <button (click)="emitLoadMore()">Load More</button>
 </div>
 <div class="product-detail" [class.active]="showProductDetail">
   Status Detail: {{ statusDetail }}

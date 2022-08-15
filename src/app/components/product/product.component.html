@@ -1,8 +1,12 @@
-<app-img *ngIf="product.images.length > 0" [img]="product.images[0]"></app-img>
+<a *ngIf="product" [routerLink]="['/product', product.id]">
+  <app-img *ngIf="product.images.length > 0" [img]="product.images[0]"></app-img>
+</a>
 <h2>{{ product.price | currency: 'USD' }}</h2>
 <!--p>{{ product.title | reverse }}</p-->
 <p>{{ product.title }}</p>
 <p *ngIf="product.taxes">{{ product.taxes | currency:'$' }}</p>
 <p appHighligth>{{ product.description }}</p>
-<button (click)="onShowDetail()">Ver Detalle</button>
+<!--button (click)="onShowDetail()">Ver Detalle</button-->
+<!-- . en routerlink indica que no necesita cambiar la url y solo agregar los parametros -->
+<a routerLink="." [queryParams]="{product: product.id}">Ver Detalle</a>
 <button (click)="onAddToCart()">Add Cart</button>

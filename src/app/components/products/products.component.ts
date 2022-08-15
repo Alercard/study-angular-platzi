@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { switchMap, zip } from 'rxjs';
 import { CreateProductDTO, Product, UpdateProductDTO } from 'src/app/models/product.model';
 import { ProductsService } from 'src/app/services/products.service';
@@ -9,19 +9,28 @@ import { StoreService } from 'src/app/services/store.service';
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss']
 })
-export class ProductsComponent implements OnInit {
+export class ProductsComponent {
 
   myShoppingCart: Product[] = [];
   total: number = 0;
 
-  products: Product[] = [];
+  @Input() products: Product[] = [];
+  //@Input() productId: string | null = null;
+  // para leer los cambios de forma continua
+  @Input()
+  set productId(id: string | null) {
+    if (id) {
+      this.onShowDetail(id);
+    }
+  }
+
   productChosen!: Product;
   showProductDetail = false;
   today = new Date();
   date = new Date(2021, 11, 12);
-  limit = 10;
-  offset = 0;
   statusDetail: 'loading' | 'success' | 'error' | 'init' = 'init';
+
+  @Output() loadMore = new EventEmitter();
 
   constructor(
     // inyeccion de dependencias
@@ -29,17 +38,6 @@ export class ProductsComponent implements OnInit {
     private productsService: ProductsService
   ) {
     this.myShoppingCart = this.storeService.getShoppingCart();
-  }
-
-  ngOnInit(): void {
-    // como el request es asyncrono es mejor usarlo aqui
-    /*
-    this.productsService.getProductsByPage(this.limit, this.offset)
-    .subscribe(data => {
-      this.products = data;
-    })
-    */
-   this.loadMore();
   }
 
   onAddToShoppingCart(product: Product) {
@@ -53,7 +51,9 @@ export class ProductsComponent implements OnInit {
 
   onShowDetail(id: string) {
     this.statusDetail = 'loading';
-    this.toggleProductDetail();
+    if (!this.showProductDetail) {
+      this.showProductDetail = true;
+    }
 
     this.productsService.getProduct(id)
     .subscribe(product => {
@@ -128,13 +128,8 @@ export class ProductsComponent implements OnInit {
     });
   }
 
-  loadMore() {
-    this.productsService.getProductsByPage(this.limit, this.offset)
-    .subscribe(products => {
-      // concat es para array inmutables por lo que se debe reaccianr a la variable
-      this.products = this.products.concat(products);
-      this.offset += this.limit;
-    })
+  emitLoadMore() {
+    this.loadMore.emit();
   }
 
 }
